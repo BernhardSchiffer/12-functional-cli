@@ -4,7 +4,9 @@ import ohm.softa.a12.icndb.JokeGenerator;
 import ohm.softa.a12.model.JokeDto;
 import ohm.softa.a12.model.ResponseWrapper;
 
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 public abstract class App {
@@ -36,6 +38,13 @@ public abstract class App {
              * use `skip` and `limit` to retrieve the required elements
              * use `map` to unwrap the ResponseWrapper value
              * and print the jokes to the STDOUT */
+            jokesSource.limit(jokeCount)
+            	.skip(skipCount)
+            	.filter(w -> w != null)
+            	.filter(wrapper -> wrapper.isSuccessfull())
+            	.map(wrapper -> wrapper.getValue())
+            	.forEach(System.out::println);
+
 
             System.out.println("If you want to quit press [Q] otherwise press [C] to continue.");
             var input = inputScanner.next();
